@@ -52,7 +52,7 @@ async function startSearch(event) {
 
     maxPages = Math.ceil(totalHits / 40);
 
-    if (totalHits === 0) {
+    if (totalHits === 0 || searchQuery.trim() === '') {
       Notiflix.Notify.warning(
         'Sorry, there are no images matching your search query. Please try again.'
       );
