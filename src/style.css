@@ -69,7 +69,8 @@ b {
 .load-more--wrap {
   display: flex;
   justify-content: center;
-  padding: 20px 0 10px 0;
+  padding-top: 20px;
+  margin-bottom: 40px;
 }
 
 .load-more {
@@ -109,6 +110,7 @@ b {
 
 .photo-card {
   width: 300px;
+  height: 200px;
   padding: 6px;
   border: #434455 solid 1px;
   border-radius: 5px;
