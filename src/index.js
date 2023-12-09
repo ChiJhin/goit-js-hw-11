@@ -58,15 +58,14 @@ async function startSearch(event) {
       );
     } else {
       gallery.insertAdjacentHTML('beforeend', createCard(hits));
-
+      if (!firstSearch) {
+        Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
+      }
       lightbox.refresh();
 
       if (currentPage < maxPages) {
         load.style.display = '';
       }
-    }
-    if (!firstSearch) {
-      Notiflix.Notify.info(`Hooray! We found ${totalHits} images.`);
     }
   } catch (error) {
     Notiflix.Loading.remove();
