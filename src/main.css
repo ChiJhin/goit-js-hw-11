@@ -1,6 +1,6 @@
 body {
   color: #434455;
-  background-color: #ffffff;
+  background-color: rgba(143, 217, 169, 0.958);
   font-family: 'Roboto', sans-serif;
   font-size: 24px;
   font-weight: 500;
@@ -39,8 +39,11 @@ svg {
 
 input {
   font-family: inherit;
+  font-size: 16px;
   width: 300px;
   margin-right: 10px;
+  padding: 5px;
+  border-radius: 5px;
 }
 
 button {
@@ -48,21 +51,32 @@ button {
   color: currentColor;
   cursor: pointer;
   width: 96px;
+  border-radius: 5px;
 }
+
+button:hover {
+  background-color: azure;
+}
+
 b {
   font-weight: 700;
 }
+.container {
+  width: auto;
+  padding: 100px 50px 0 50px;
+}
 
-.cont {
-  padding: 0 40px;
+.container_btn {
+  display: flex;
 }
 
 .search-form {
-  background-color: #4d5ae5;
-  max-width: 100%;
+  background-color: #16193ab9;
+  width: 100%;
   padding: 24px 48px;
   margin-bottom: 12px;
   display: flex;
+  position: fixed;
   justify-content: center;
 }
 
@@ -82,6 +96,7 @@ b {
   padding: 5px 20px;
   font-family: serif;
   font-size: 20px;
+  margin: 20px auto;
 }
 
 .load-more:hover {
@@ -112,11 +127,15 @@ b {
   width: 300px;
   height: 200px;
   padding: 6px;
+  background-color: rgb(127, 150, 255);
   border: #434455 solid 1px;
   border-radius: 5px;
+  box-shadow: 0px 2px 1px 0px rgba(26, 27, 38, 0.5),
+    0px 1px 1px 0px rgba(26, 27, 38, 0.5), 0px 1px 6px 0px rgba(26, 27, 38, 0.5);
 }
 
 .photo-card:hover {
-  box-shadow: 0px 2px 1px 0px rgba(26, 27, 38, 0.5),
-    0px 1px 1px 0px rgba(26, 27, 38, 0.5), 0px 1px 6px 0px rgba(26, 27, 38, 0.5);
+  box-shadow: 0px 4px 2px 0px rgba(26, 27, 38, 0.5),
+    0px 2px 2px 0px rgba(26, 27, 38, 0.5),
+    0px 2px 12px 0px rgba(26, 27, 38, 0.5);
 }

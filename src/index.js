@@ -1,103 +1,89 @@
-import Notiflix from 'notiflix';
+import {
+  success,
+  warning,
+  error,
+  loading,
+  removeLoading,
+  info,
+} from './js/notiflix';
 
-import SimpleLightbox from 'simplelightbox';
+import { lightbox } from './js/lightbox';
 
-import 'simplelightbox/dist/simple-lightbox.min.css';
+import { createCard } from './js/createCard';
 
-import { apiSearch } from './js/api-set';
+import { fetchHits } from './js/api-pixabay';
 
-import { createCard } from './js/markup';
+const form = document.querySelector('.search-form');
 
-const form = document.querySelector('#search-form');
-
-const gallery = document.querySelector('div.gallery');
+const gallery = document.querySelector('.gallery');
 
 const load = document.querySelector('.load-more');
 
-let currentPage = 1;
-let maxPages;
+let page = 1;
+
 let searchQuery = '';
-let firstSearch = true;
 
-load.style.display = 'none';
+let maxPages;
 
-let lightbox = new SimpleLightbox('.gallery a', {
-  captionsData: 'alt',
-  captionDelay: 250,
-});
+load.style.visibility = 'hidden';
 
-form.addEventListener('submit', startSearch);
+form.addEventListener('submit', onSub);
 
-load.addEventListener('click', showMore);
+load.addEventListener('click', onLoad);
 
-async function startSearch(event) {
+async function onSub(event) {
   event.preventDefault();
-
-  load.style.display = 'none';
 
   gallery.innerHTML = '';
 
-  lightbox.refresh();
+  page = 1;
 
-  searchQuery = form.elements.searchQuery.value;
-
-  currentPage = 1;
-
-  Notiflix.Loading.arrows('Loading...');
+  searchQuery = event.currentTarget.elements.searchQuery.value.trim();
+  loading();
 
   try {
-    const { totalHits, hits } = await apiSearch(searchQuery, currentPage);
-
-    Notiflix.Loading.remove();
+    const { hits, totalHits } = await fetchHits(searchQuery, page);
+    removeLoading();
 
     maxPages = Math.ceil(totalHits / 40);
 
-    if (totalHits === 0 || searchQuery.trim() === '') {
-      Notiflix.Notify.warning(
-        'Sorry, there are no images matching your search query. Please try again.'
-      );
-    } else {
-      gallery.insertAdjacentHTML('beforeend', createCard(hits));
-      if (!firstSearch) {
-        Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
-      }
-      lightbox.refresh();
+    if (searchQuery === '' || totalHits === 0) {
+      load.style.visibility = 'hidden';
+      return warning();
+    }
 
-      if (currentPage < maxPages) {
-        load.style.display = '';
-      }
+    load.style.visibility = 'visible';
+
+    success(totalHits);
+
+    gallery.insertAdjacentHTML('beforeend', createCard(hits));
+
+    if (page >= maxPages) {
+      load.style.visibility = 'hidden';
+      info();
     }
   } catch (error) {
-    Notiflix.Loading.remove();
-
-    Notiflix.Notify.failure(error.message);
+    error(error.message);
   }
-  firstSearch = false;
+
+  lightbox.refresh();
 }
 
-async function showMore(event) {
+async function onLoad(event) {
   event.preventDefault();
-  currentPage += 1;
-
-  if (currentPage > maxPages) {
-    load.style.display = 'none';
-    Notiflix.Notify.warning(
-      "We're sorry, but you've reached the end of search results."
-    );
-  } else {
-    Notiflix.Loading.circle('Searching...');
-    try {
-      const images = await apiSearch(searchQuery, currentPage);
-
-      Notiflix.Loading.remove();
-
-      gallery.insertAdjacentHTML('beforeend', createCard(images.hits));
-
-      lightbox.refresh();
-    } catch (error) {
-      Notiflix.Loading.remove();
-
-      Notiflix.Notify.failure(error.message);
+  page += 1;
+  loading();
+  try {
+    const { hits } = await fetchHits(searchQuery, page);
+    removeLoading();
+    if (page >= maxPages) {
+      load.style.visibility = 'hidden';
+      info();
     }
+    gallery.insertAdjacentHTML('beforeend', createCard(hits));
+  } catch (error) {
+    error(error.message);
   }
+
+  lightbox.refresh();
 }
