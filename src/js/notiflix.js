@@ -5,7 +5,7 @@ const success = params => {
 };
 
 const warning = () => {
-  return Notiflix.Notify.warning(
+  return Notiflix.Notify.failure(
     'Sorry, there are no images matching your search query. Please try again.'
   );
 };
