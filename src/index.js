@@ -13,6 +13,7 @@ import { createCard } from './js/createCard';
 
 import { fetchHits } from './js/api-pixabay';
 
+
 const form = document.querySelector('.search-form');
 
 const gallery = document.querySelector('.gallery');
